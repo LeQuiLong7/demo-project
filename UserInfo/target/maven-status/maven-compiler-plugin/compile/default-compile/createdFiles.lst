@@ -1,0 +1,8 @@
+com\lql\app\model\User.class
+com\lql\app\config\SecurityConfig.class
+com\lql\app\controller\UserController.class
+com\lql\app\config\BeanConfig.class
+com\lql\app\repository\UserRepository.class
+com\lql\app\UserInfoApplication.class
+com\lql\app\filter\ReadHeaderFilter.class
+com\lql\app\model\CustomAuthentication.class

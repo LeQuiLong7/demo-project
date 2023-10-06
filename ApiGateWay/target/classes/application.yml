@@ -1,0 +1,58 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8000/realms/demo-realm
+  kafka:
+    bootstrap-servers: localhost:29092
+    producer:
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:5173"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+#            allowCredentials: true
+      routes:
+        - id: user-route
+          uri: lb://user-service
+          predicates:
+            - Path=/users/**
+          filters:
+            - RewritePath=/(?<remaining>.*), /api/v1/$\{remaining}
+            - SetResponseHeader=Access-Control-Allow-Origin,*
+            - SetResponseHeader=Access-Control-Allow-Methods,*
+        - id: movie-route
+          uri: lb://movie-service
+          predicates:
+            - Path=/movies/**
+          filters:
+            - RewritePath=/(?<remaining>.*), /api/v1/$\{remaining}
+            - SetResponseHeader=Access-Control-Allow-Origin,*
+            - SetResponseHeader=Access-Control-Allow-Methods,*
+  application:
+    name: api-gateway
+server:
+  port: 8080
+logging:
+  level:
+#    root: INFO
+#    org.springframework.cloud.gateway: TRACE
+#    org.springframework.cloud.gateway.RouteDefinitionLocator: INFO
+    org.springframework.security: TRACE
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
