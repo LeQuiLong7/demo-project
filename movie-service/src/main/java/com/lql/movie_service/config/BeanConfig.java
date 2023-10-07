@@ -16,8 +16,8 @@ public class BeanConfig {
     @Bean
     public AmazonS3 s3Client() {
         AWSCredentials credentials = new BasicAWSCredentials(
-                "AKIA6K6BWIE3JUMAWS4Q",
-                "JBK2p7+gzboyUgEJdLbl7rLS+bxn+/b+HhL4U+dk"
+                "access-key",
+                "secret-key"
         );
         return AmazonS3Client.builder()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
